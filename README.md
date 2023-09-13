@@ -12,12 +12,3 @@ MyBlog is a blogging application built with [React](https://reactjs.org/) on the
 
 Authentication is handled using JWT tokens. Users can sign up by providing a username and password. Once registered, they can log in to obtain a token that will allow them to access protected routes.
 
-## Installation and Usage
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/sochoav1/MyBlog.git
-cd MyBlog
-npm install
-
-npm start
