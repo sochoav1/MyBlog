@@ -52,6 +52,27 @@ app.delete('/posts/:id', (req, res) => {
     });
 });
 
+app.put('/posts/:id', (req, res) => {
+    const { title, content } = req.body;
+    const postId = req.params.id;
+
+    if (!title || !content) {
+        return res.status(400).json({ error: "Title and content are required" });
+    }
+
+    const stmt = db.prepare("UPDATE posts SET title = ?, content = ? WHERE id = ?");
+    stmt.run(title, content, postId, function(err) {
+        if (err) {
+            return res.status(400).json({ error: err.message });
+        }
+        if (this.changes === 0) {
+            return res.status(404).json({ error: "Post not found" });
+        }
+        res.json({ message: "Post updated successfully" });
+    });
+});
+
+
 
 const PORT = 5000;
 app.listen(PORT, () => {
