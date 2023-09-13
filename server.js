@@ -37,6 +37,22 @@ app.post('/posts', (req, res) => {
     });
 });
 
+app.delete('/posts/:id', (req, res) => {
+    const postId = req.params.id;
+
+    const stmt = db.prepare("DELETE FROM posts WHERE id = ?");
+    stmt.run(postId, function(err) {
+        if (err) {
+            return res.status(400).json({ error: err.message });
+        }
+        if (this.changes === 0) {
+            return res.status(404).json({ error: "Post not found" });
+        }
+        res.json({ message: "Post deleted successfully" });
+    });
+});
+
+
 const PORT = 5000;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
