@@ -8,6 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
 // Initialize SQLite database
 const db = new sqlite3.Database('./database.db');
 
@@ -114,3 +115,18 @@ app.post('/login', (req, res) => {
 
     res.json({ token });
 });
+
+
+// Este es un arreglo de ejemplo. En una aplicación real, usarías una base de datos.
+const users = [
+    {
+        id: 1,
+        username: "user1",
+        password: bcrypt.hashSync("password1", 10)  // encripta la contraseña
+    },
+    {
+        id: 2,
+        username: "user2",
+        password: bcrypt.hashSync("password2", 10)  // encripta la contraseña
+    }
+];
