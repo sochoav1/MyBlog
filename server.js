@@ -78,3 +78,39 @@ const PORT = 5000;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
+
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+
+const SECRET_KEY = "1234";
+
+// Registro
+app.post('/register', async (req, res) => {
+    const { username, password } = req.body;
+
+    // Encriptar contraseña
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Guardar usuario en la base de datos (aquí solo es un ejemplo)
+    const user = { id: Date.now(), username, password: hashedPassword };
+    users.push(user);
+
+    res.status(201).json({ message: "User registered successfully!" });
+});
+
+// Inicio de sesión
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+
+    // Buscar usuario en la base de datos (esto es solo un ejemplo)
+    const user = users.find(u => u.username === username);
+
+    if (!user || !bcrypt.compareSync(password, user.password)) {
+        return res.status(400).json({ error: "Invalid credentials" });
+    }
+
+    // Generar token
+    const token = jwt.sign({ userId: user.id }, SECRET_KEY, { expiresIn: '1h' });
+
+    res.json({ token });
+});
